@@ -75,13 +75,16 @@ class City():
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.pop = 1
+        self.currentPop = 1
+        self.nextPop = 3
+        self.progressPop=0
         self.food = 0
         self.gold = 0
         self.cult = 0
-        # print("gold",board[x][y].gold)
+        self.currentFields = 1
+        self.nextField = 5
         self.firstField = board[x][y]
-        # print(self.firstField)
+        #make colors of aquired fields
         self.Fields = [board[x][y]]
 
     def getFoodIncome(self):
@@ -108,8 +111,111 @@ class City():
         # print(self.getGoldIncome())
         # print(self.getCultIncome())
         self.food += self.getFoodIncome()
+        self.consumeFood()
+        if self.progressPop>=self.nextPop:
+            self.expandPop()
         self.gold += self.getGoldIncome()
         self.cult += self.getCultIncome()
+        if self.cult>=self.nextField:
+            self.aquireField()
+        print("pop"+str(self.currentPop))
+        print("food"+str(self.food))
+    def consumeFood(self):
+        self.food -= self.currentPop#consumption
+        if self.food<0:#too low food
+            self.progressPop-=self.currentPop#consuming from storage
+            if self.progressPop<0:#too low storage
+                self.killPop()
+                self.progressPop=0
+            self.food=0
+        self.progressPop += self.food#surplus adding to storage
+    def killPop(self):
+        self.currentPop-=1
+        # here do sth -remove workers from tiles,
+        if self.currentPop<0:
+            print("test")
+            # self.destroyCity()
+    def expandPop(self):
+        self.currentPop+=1
+        self.nextPop *= 2.5#set higher resctriction for new pop
+        board[self.x][self.y].updatePop
+    def findNewField(self):
+        c_max=0
+        c_coord=[0,0]
+        for i in self.Fields:
+            s=0
+            s_max=0
+            s_coord=[0,0]
+            s=self.calcFieldScore(i.xPos,i.yPos)
+            if board[i.xPos][i.yPos].owner==0:
+                if s>s_max:
+                    s_max=s
+                    s_coord[0]=i.xPos
+                    s_coord[1]=i.yPos
+                s = self.calcFieldScore(i.xPos+1, i.yPos)
+            if board[i.xPos+1][i.yPos].owner == 0:
+                if s > s_max:
+                    s_max = s
+                    s_coord[0] = i.xPos
+                    s_coord[1] = i.yPos
+                s = self.calcFieldScore(i.xPos, i.yPos+1)
+            if board[i.xPos][i.yPos+1].owner == 0:
+                if s > s_max:
+                    s_max = s
+                    s_coord[0] = i.xPos
+                    s_coord[1] = i.yPos
+                s = self.calcFieldScore(i.xPos-1, i.yPos)
+            if board[i.xPos-1][i.yPos].owner == 0:
+                if s > s_max:
+                    s_max = s
+                    s_coord[0] = i.xPos
+                    s_coord[1] = i.yPos
+                s = self.calcFieldScore(i.xPos, i.yPos-1)
+            if board[i.xPos][i.yPos-1].owner == 0:
+                if s > s_max:
+                    s_max = s
+                    s_coord[0] = i.xPos
+                    s_coord[1] = i.yPos
+                s = self.calcFieldScore(i.xPos+1, i.yPos+1)
+            if board[i.xPos+1][i.yPos+1].owner == 0:
+                if s > s_max:
+                    s_max = s
+                    s_coord[0] = i.xPos
+                    s_coord[1] = i.yPos
+                s = self.calcFieldScore(i.xPos-1, i.yPos-1)
+            if board[i.xPos-1][i.yPos-1].owner == 0:
+                if s > s_max:
+                    s_max = s
+                    s_coord[0] = i.xPos
+                    s_coord[1] = i.yPos
+                s = self.calcFieldScore(i.xPos-1, i.yPos+1)
+            if board[i.xPos-1][i.yPos-1].owner == 0:
+                if s > s_max:
+                    s_max = s
+                    s_coord[0] = i.xPos
+                    s_coord[1] = i.yPos
+                s = self.calcFieldScore(i.xPos+1, i.yPos-1)
+            if board[i.xPos-1][i.yPos-1].owner == 0:
+                if s > s_max:
+                    s_max = s
+                    s_coord[0] = i.xPos
+                    s_coord[1] = i.yPos
+            if s_max>c_max:
+                c_max=s_max
+                c_coord[0]=s_coord[0]
+                c_coord[1]=s_coord[1]
+        return c_coord
+    def calcFieldScore(self, x, y):
+        if board[x][y].food<=0:
+            return 0
+        else:
+            return board[x][y].food+board[x][y].cult+board[x][y].gold
+    def aquireField(self):
+        coord=self.findNewField()
+        if coord[0]!=0 and coord[1]!=0:
+            self.Fields+=board[coord[0]][coord[1]]
+        #make colors of aquired fields
+        self.nextField*=2.6
 
 
 # Generate And Draw Board With Fields
