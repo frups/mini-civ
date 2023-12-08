@@ -1,4 +1,4 @@
-## Civilization mini - Simpler version of Civilization game.
+## mini civ - Simpler version of Civilization game.
 
 ### 1. Requirements:
 python3 and pygame library
