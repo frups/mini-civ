@@ -71,7 +71,7 @@ class City():
     def expand_pop(self):
         self.currentPop += 1
         self.nextPop *= 2.5  # set higher restriction for new pop
-        gameSetup.board.get_field(self.x,self.y).update_pop
+        gameSetup.board.get_field(self.x,self.y).update_pop(self.currentPop)
 
     def find_new_field(self):
         c_max = 0

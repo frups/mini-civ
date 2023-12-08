@@ -11,13 +11,14 @@ if not pg.mixer:
 
 MAIN_DIR = os.path.split(os.path.abspath(__file__))[0]
 DATA_DIR = os.path.join(MAIN_DIR, "data")
-SIZE = 10
-FIELD_SIZE = int(500 / SIZE)
+NO_FIELDS_PER_ROW = 10
+SCREEN_SIZE = 500
+FIELD_SIZE = int(SCREEN_SIZE / NO_FIELDS_PER_ROW)
 
 # Initialize pygame
 pg.init()
-screen = pg.display.set_mode((700, 700))
-pg.display.set_caption("miniCiv")
+screen = pg.display.set_mode((SCREEN_SIZE, SCREEN_SIZE))
+pg.display.set_caption("mini-civ")
 pg.mouse.set_visible(1)
 
 # Create the background
@@ -30,5 +31,5 @@ screen.blit(background, (0, 0))
 pg.display.flip()
 
 # Initialize objects
-board = Board(SIZE)
+board = Board(NO_FIELDS_PER_ROW)
 playerOne = Player("gracz1")
