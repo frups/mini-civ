@@ -21,5 +21,5 @@
 > for your first city try to find field with as many food points as possible
 
 > [!WARNING]
-> fyou can change number of fields on a board by editing line no. 14 in gameSetup.py file
-> (optimal is between 8 and 20 - other values may not display correctly)
+> you can change number of fields on a board by editing line no. 14 in gameSetup.py file
+> (optimal is between 8 and 20 - other values may not be displayed correctly)
