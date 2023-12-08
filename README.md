@@ -1,10 +1,11 @@
 ## mini civ - Simpler version of Civilization game.
 
 ### 1. Requirements:
-python3 and pygame library
+- python3 and pygame library
+- at least 640x640 pixels screen
 
 ### 2. Game rules:
-- game board is made of 100 fields
+- game board is 10x10 fields
 - on each field there are 3 types of points:
   - food (green)
   - gold (yellow)
@@ -18,3 +19,7 @@ python3 and pygame library
 
 > [!TIP]
 > for your first city try to find field with as many food points as possible
+
+> [!WARNING]
+> fyou can change number of fields on a board by editing line no. 14 in gameSetup.py file
+> (optimal is between 8 and 20 - other values may not display correctly)
